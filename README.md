@@ -1,3 +1,5 @@
+**This branch is an experimental usage of Unity version 2019.2.10f**
+
 # Offworld Dragon: Supernova
  
 A space game that has been many years in the making, through many different versions and such. Using this GitHub I can keep track of each version from now on.
