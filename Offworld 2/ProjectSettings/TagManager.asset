@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Thruster
+  - Enemy
+  - Bullet
+  - CamRig
+  - Ally
+  - Node
+  - Canvas
   layers:
   - Default
   - TransparentFX
@@ -14,13 +21,13 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - EnemyBoolet
+  - PlayerBoolet
+  - PostProcessing2
+  - Radar
+  - Nodes
   - 
   - 
   - 
