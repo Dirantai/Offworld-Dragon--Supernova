@@ -9667,6 +9667,8 @@ MonoBehaviour:
     thrust: 0
     speedMultiplier: 0
     forceMultiplier: 0
+  missiles: {fileID: 0}
+  gunSystem: {fileID: 526517895644357559}
   currentShieldHealth: 0
   currentHullHealth: 0
   active: 0
@@ -9680,7 +9682,6 @@ MonoBehaviour:
   distanceToTarget: 0
   marker: {fileID: 5673496011440171189, guid: 598d9f44e36cfd2489fca2d03d9c22d4, type: 3}
   engagementRange: 1000
-  gunSystem: {fileID: 526517895644357559}
   canvas: {fileID: 0}
   breakOff: 0
   shoot: 0
@@ -9711,6 +9712,7 @@ MonoBehaviour:
   turrets: []
   Shoot: 0
   AI: 1
+  accuracy: 2
 --- !u!114 &1676490241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9746,6 +9748,8 @@ MonoBehaviour:
     thrust: 0
     speedMultiplier: 0
     forceMultiplier: 0
+  missiles: {fileID: 0}
+  gunSystem: {fileID: 526517895644357559}
   currentShieldHealth: 0
   currentHullHealth: 0
   active: 0
@@ -9756,8 +9760,6 @@ MonoBehaviour:
     shieldRechargeRate: 5
   boosting: 0
   marker: {fileID: 5673496011440171189, guid: 598d9f44e36cfd2489fca2d03d9c22d4, type: 3}
-  engagementRange: 2000
-  gunSystem: {fileID: 526517895644357559}
   canvas: {fileID: 0}
   shootInterval: 5
   cooldownInterval: 2

@@ -396,24 +396,26 @@ public class ShipAI : ShipSystem2
         input.x = CheckCollisionOnAxis(transform.forward, input.x);
         input.y = CheckCollisionOnAxis(transform.right, input.y);
         input.z = CheckCollisionOnAxis(transform.up, input.z);
-        input = CheckCollisionOnVelocity(shipRigid.velocity, input);
+        //input = CheckCollisionOnVelocity(shipRigid.velocity, input);
         return input;
     }
 
     Vector3 CheckCollisionOnVelocity(Vector3 direction, Vector3 input)
     {
-        Collider collider = new Collider();
-        if (shipRigid.SweepTest(direction.normalized, out RaycastHit hitInfo, Mathf.Clamp(shipRigid.velocity.magnitude, 0, 2), QueryTriggerInteraction.Ignore))
+        Vector3 position = Vector3.zero;
+        Debug.DrawRay(transform.position, direction * Mathf.Clamp(shipRigid.velocity.magnitude, 5, 20), Color.green);
+        if (shipRigid.SweepTest(direction.normalized, out RaycastHit hitInfo, Mathf.Clamp(shipRigid.velocity.magnitude, 5, 20), QueryTriggerInteraction.Ignore))
         {
-            collider = hitInfo.collider;
+            position = hitInfo.point;
         }
 
-        if (collider != null)
+        if (position != Vector3.zero)
         {
-            float forwardVelocity = Vector3.Dot(transform.forward, shipRigid.velocity);
-            float rightVelocity = Vector3.Dot(-transform.right, shipRigid.velocity);
-            float upVelocity = Vector3.Dot(-transform.up, shipRigid.velocity);
-            input = new Vector3(Mathf.Clamp(-forwardVelocity * 10, -1, 1), Mathf.Clamp(-rightVelocity * 10, -1, 1), Mathf.Clamp(-upVelocity * 10, -1, 1));
+            Debug.Log("Hit!");
+            float forwardVelocity = Vector3.Dot(transform.forward, position - transform.position);
+            float rightVelocity = Vector3.Dot(-transform.right, position - transform.position);
+            float upVelocity = Vector3.Dot(-transform.up, position - transform.position);
+            input = new Vector3(Mathf.Clamp(forwardVelocity * 10, -1, 1), Mathf.Clamp(-rightVelocity * 10, -1, 1), Mathf.Clamp(-upVelocity * 10, -1, 1));
         }
         return input;
     }

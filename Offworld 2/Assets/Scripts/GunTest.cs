@@ -31,10 +31,7 @@ public class GunTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shipTarget != null)
-        {
-            ControlTurrets();
-        }
+        ControlTurrets();
         if (!AI)
         {
             HandleEnemySelection();
@@ -152,7 +149,10 @@ public class GunTest : MonoBehaviour
             else
             {
                 //aimPoint = Intercept(turret.weaponValues.projectileSpeed * speedMultiplier);
-                aimPoint = TestIntercept(turret.weaponValues.projectileSpeed * speedMultiplier, shipTarget.position, shipTarget.GetComponent<Rigidbody>().velocity, transform.position);
+                if (shipTarget != null)
+                {
+                    aimPoint = TestIntercept(turret.weaponValues.projectileSpeed * speedMultiplier, shipTarget.position, shipTarget.GetComponent<Rigidbody>().velocity, transform.position);
+                }
             }
             turret.TurretTurn(aimPoint, turret.weaponValues.turnSpeed);
             if (!AI)
@@ -163,11 +163,18 @@ public class GunTest : MonoBehaviour
         }
     }
 
+    public int accuracy;
+
     Vector3 TestIntercept(float projectileSpeed, Vector3 targetPosition, Vector3 targetVelocity, Vector3 shipPosition)
     {
         float timeToIntercept = 0;
         float distanceToTarget = (targetPosition - shipPosition).magnitude;
         timeToIntercept = distanceToTarget / projectileSpeed;
+        for (int i = 0; i < accuracy; i++)
+        {
+            distanceToTarget = ((targetPosition + (targetVelocity * timeToIntercept)) - shipPosition).magnitude;
+            timeToIntercept = distanceToTarget / projectileSpeed;
+        }
         return targetPosition + (targetVelocity * timeToIntercept);
     }
 
