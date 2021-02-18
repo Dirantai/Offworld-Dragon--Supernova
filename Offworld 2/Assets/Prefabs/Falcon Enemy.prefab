@@ -10324,6 +10324,7 @@ MonoBehaviour:
   turrets: []
   Shoot: 0
   AI: 1
+  accuracy: 0
 --- !u!114 &247039911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15233,7 +15234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponValues:
     baseDamage: 10
-    projectileSpeed: 300
+    projectileSpeed: 200
     fireRate: 600
     spread: 0.5
     bulletModel: {fileID: 5150087107705492506, guid: e466a34403962d543a37289c958d4387,
@@ -30026,7 +30027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponValues:
     baseDamage: 10
-    projectileSpeed: 300
+    projectileSpeed: 200
     fireRate: 600
     spread: 0.5
     bulletModel: {fileID: 5150087107705492506, guid: e466a34403962d543a37289c958d4387,

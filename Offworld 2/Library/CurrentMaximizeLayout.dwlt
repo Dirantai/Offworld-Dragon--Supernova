@@ -20,10 +20,10 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 1307
-  m_MinSize: {x: 681, y: 472}
-  m_MaxSize: {x: 14002, y: 14022}
+  m_MinSize: {x: 679, y: 472}
+  m_MaxSize: {x: 14000, y: 14022}
   vertical: 1
-  controlID: 12213
+  controlID: 15538
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -126,10 +126,10 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1307
-  m_MinSize: {x: 681, y: 472}
-  m_MaxSize: {x: 14002, y: 14022}
+  m_MinSize: {x: 679, y: 472}
+  m_MaxSize: {x: 14000, y: 14022}
   vertical: 0
-  controlID: 12214
+  controlID: 15539
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 472}
   m_MaxSize: {x: 10000, y: 14022}
   vertical: 1
-  controlID: 12215
+  controlID: 15495
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 222}
   m_MaxSize: {x: 8004, y: 4022}
   vertical: 0
-  controlID: 12216
+  controlID: 15464
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -237,7 +237,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 5e53faff1264faffa6b6faffb2b6faffd0b6faffd2b6faff38a8fdffd88afeffe48afeff028bfeff048bfeff68c7feff32fbffffd0370000603b00000a09010060570200
+      m_ExpandedIDs: 2837f4ffb07d0300b87d0300047e0300287e03002c7e0300487e03005c7e0300d67e0300
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -320,16 +320,16 @@ MonoBehaviour:
   m_ShowContextualTools: 0
   m_WindowGUID: 325f1b53f0f213c4b8e2be7756b9677b
   m_Gizmos: 1
-  m_SceneIsLit: 1
+  m_SceneIsLit: 0
   m_SceneLighting: 1
   m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 275.7911, y: -851.6782, z: -1019.3433}
+    m_Target: {x: -937.7314, y: -167.59657, z: 163.42712}
     speed: 2
-    m_Value: {x: 275.7911, y: -851.6782, z: -1019.3433}
+    m_Value: {x: -937.7314, y: -167.59657, z: 163.42712}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_SceneViewState:
     showFog: 1
     showMaterialUpdate: 1
-    showSkybox: 1
+    showSkybox: 0
     showFlares: 1
     showImageEffects: 1
     showParticleSystems: 1
@@ -358,13 +358,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.17935418, y: 0.33584324, z: -0.065181024, w: -0.92243874}
+    m_Target: {x: -0.23680522, y: -0.46051946, z: 0.12894888, w: -0.8457653}
     speed: 2
-    m_Value: {x: -0.17934518, y: 0.33582637, z: -0.06517775, w: -0.9223924}
+    m_Value: {x: -0.23679319, y: -0.46049607, z: 0.12894234, w: -0.8457223}
   m_Size:
-    m_Target: 2.8578837
+    m_Target: 3.8294578
     speed: 2
-    m_Value: 2.8578837
+    m_Value: 3.8294578
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -575,11 +575,11 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/Prefabs
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\Nate\Documents\GitHub\Offworld-Dragon--Supernova\Offworld
     2
@@ -587,8 +587,8 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 49}
-    m_SelectedIDs: 942a0000
-    m_LastClickedID: 10900
+    m_SelectedIDs: cc2e0000
+    m_LastClickedID: 11980
     m_ExpandedIDs: 00000000942a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -642,8 +642,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 6a5cfafff063faff1c5efaff5c60faff
-    m_LastClickedInstanceID: -369558
+    m_SelectedInstanceIDs: 687e03001a7e0300
+    m_LastClickedInstanceID: 228968
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 081300001e130000082a0000a4140000c81400007c130000ce0a0000562a00006a26000008140000607a0000441400004a1400006e140000ba130000de120000b2170000181000002e0e00008c95f7ffc40b00008e0e000014a7ffff5a190000601900008a170000280a000070080000862a00005ecfffffd842faffce780000240900007e0800004e060000fa1e00008e24000022220000842b0000cc0800001c170100a41c0100382a00008a2a00004a2a0000ce2a0000062e00008a3100009a4a000000000000
     m_RenameOverlay:
@@ -1079,8 +1079,8 @@ MonoBehaviour:
     y: 0
     width: 528
     height: 1307
-  m_MinSize: {x: 277, y: 72}
-  m_MaxSize: {x: 4002, y: 4022}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
