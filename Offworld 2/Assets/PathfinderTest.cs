@@ -87,9 +87,7 @@ public class PathfinderTest : MonoBehaviour
         Vector3 hitPos = new Vector3();
         Vector3 nextNode = StartPosition;
         int ClosestStartNode = 0;
-        //while (!pathFound)
-        //{
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 30; i++)
         {
             hitPos = Vector3.zero;
             Debug.DrawLine(nextNode, TargetPosition, Color.blue);
@@ -117,7 +115,6 @@ public class PathfinderTest : MonoBehaviour
             }
         }
         pathFind = false;
-        //}
     }
 
     GameObject[] FindAvailableNodes(GameObject[] Nodes, Vector3 StartPosition)

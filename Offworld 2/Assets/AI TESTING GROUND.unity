@@ -4899,6 +4899,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1289629362}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &422471274 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 526517897353922808, guid: 99ba4c16ac98c1244b18e0529b7d0309,
+    type: 3}
+  m_PrefabInstance: {fileID: 599024597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &428342347
 GameObject:
   m_ObjectHideFlags: 0
@@ -5267,11 +5273,12 @@ MonoBehaviour:
     specialRange: 0
   shipState: 0
   Node: {fileID: 0}
-  previousNodes: []
-  seenNodes: []
+  nodePath: []
   sightMask:
     serializedVersion: 2
     m_Bits: 0
+  pathFound: 0
+  pathFind: 0
 --- !u!1 &439882017
 GameObject:
   m_ObjectHideFlags: 0
@@ -7280,7 +7287,7 @@ PrefabInstance:
     - target: {fileID: 526517895644357559, guid: 99ba4c16ac98c1244b18e0529b7d0309,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 526517897160498622, guid: 99ba4c16ac98c1244b18e0529b7d0309,
         type: 3}
@@ -7308,12 +7315,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1676490241, guid: 99ba4c16ac98c1244b18e0529b7d0309, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 526517895644357557, guid: 99ba4c16ac98c1244b18e0529b7d0309,
         type: 3}
       propertyPath: m_Constraints
-      value: 126
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99ba4c16ac98c1244b18e0529b7d0309, type: 3}
@@ -7336,18 +7343,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599024599}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51eaa9238f6264d4bb37d6f8bfc8cb7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   foundNodes: []
+  model: {fileID: 422471274}
   nodePath: []
   sightMask:
     serializedVersion: 2
     m_Bits: 1
   pathFind: 0
   pathFound: 0
+  currentNode: 0
   Target: {fileID: 8931092670021939265}
 --- !u!1 &609931331
 GameObject:

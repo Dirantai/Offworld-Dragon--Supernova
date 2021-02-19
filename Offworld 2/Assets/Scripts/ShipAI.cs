@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class ShipAI : ShipSystem2
@@ -41,8 +42,7 @@ public class ShipAI : ShipSystem2
     private bool shoot;
 
     public GameObject Node;
-    public List<GameObject> previousNodes = new List<GameObject>();
-    public GameObject[] seenNodes;
+    public List<GameObject> nodePath= new List<GameObject>();
     public LayerMask sightMask;
 
     // Start is called before the first frame update
@@ -155,6 +155,7 @@ public class ShipAI : ShipSystem2
 
     private float actionTimer;
     private int direction;
+    private int currentNode;
     private Vector3 wingmanPosition;
 
     public void setWingmanStation(Vector3 position)
@@ -247,7 +248,7 @@ public class ShipAI : ShipSystem2
                 }
                 break;
             case ShipState.Pathing:
-
+                boosting = false;
                 player = null;
                 if (GameObject.FindGameObjectWithTag("Player") != null)
                 {
@@ -274,14 +275,6 @@ public class ShipAI : ShipSystem2
                     movementVector = Node.transform.position;
                 }
                 distanceToTarget = (transform.position - movementVector).magnitude;
-                if (distanceToTarget > 50)
-                {
-                    boosting = true;
-                }
-                else
-                {
-                    boosting = false;
-                }
                 trueMovementTarget = movementVector;
                 trueRotationTarget = movementVector;
                 break;
@@ -298,11 +291,13 @@ public class ShipAI : ShipSystem2
         movementInput = HandleCollisionDetection(movementInput);
         base.HandleMovement(movementInput, rotationInput);
     }
+
+    public bool pathFound;
+    public bool pathFind;
     void PathFinder(Vector3 TargetVector)
     {
         RaycastHit hit;
         Vector3 hitPos = new Vector3();
-        int ClosestNode = 0;
         Debug.DrawLine(transform.position, movementTarget, Color.blue);
         if (Physics.Raycast(transform.position, TargetVector, out hit, TargetVector.magnitude, sightMask))
         {
@@ -312,59 +307,30 @@ public class ShipAI : ShipSystem2
         if (hitPos != Vector3.zero)
         {
             shipState = ShipState.Pathing;
-            GameObject[] Nodes = GameObject.FindGameObjectsWithTag("Node");
-            if (Node == null)
+            pathFind = true;
+            if (pathFound)
             {
-                previousNodes.Clear();
-                seenNodes = FindAvailableNodes(Nodes, transform.position);
-                ClosestNode = FindShortestDistance(seenNodes, TargetVector + transform.position);
-                try
+                if (currentNode < nodePath.Count && currentNode >= 0)
                 {
-                    Node = seenNodes[ClosestNode];
-                }
-                catch
-                {
-                    Debug.Log(ClosestNode + gameObject.name);
-                }
-            }
-            else
-            {
-                Vector3 CurrentNodeVector = Node.transform.position - transform.position;
-                if (CurrentNodeVector.magnitude <= 5)
-                {
-                    bool cancel = false;
-                    foreach (GameObject node in previousNodes)
+                    Node = nodePath[currentNode];
+                    if ((transform.position - Node.transform.position).magnitude < 1)
                     {
-                        if (Node == node)
-                        {
-                            cancel = true;
-                        }
+                        currentNode -= 1;
                     }
-                    if (!cancel)
+                    hitPos = Vector3.zero;
+                    if (Physics.Raycast(transform.position, Node.transform.position - transform.position, out hit, (Node.transform.position - transform.position).magnitude, sightMask))
                     {
-                        previousNodes.Add(Node);
+                        hitPos = hit.point;
                     }
-                    seenNodes = FindAvailableNodes(Nodes, transform.position);
-                    ClosestNode = FindShortestDistance(seenNodes, TargetVector + transform.position);
-                    Node = seenNodes[ClosestNode];
+                    if (hitPos != Vector3.zero)
+                    {
+                        pathFound = false;
+                        pathFind = true;
+                    }
                 }
-                Vector3 hitPos2 = new Vector3();
-                if (Physics.Raycast(transform.position, CurrentNodeVector, out hit, CurrentNodeVector.magnitude, sightMask))
+                else
                 {
-                    hitPos2 = hit.point;
-                }
-                if (hitPos2 != Vector3.zero)
-                {
-                    seenNodes = FindAvailableNodes(Nodes, transform.position);
-                    ClosestNode = FindShortestDistance(seenNodes, TargetVector + transform.position);
-                    try
-                    {
-                        Node = seenNodes[ClosestNode];
-                    }
-                    catch
-                    {
-                        Debug.Log(ClosestNode + gameObject.name);
-                    }
+                    pathFound = false;
                 }
             }
         }
@@ -374,9 +340,53 @@ public class ShipAI : ShipSystem2
             {
                 shipState = ShipState.Idle;
             }
-            previousNodes.Clear();
-            Node = null;
+            currentNode = 315;
+            nodePath.Clear();
+            pathFound = false;
+            pathFind = false;
         }
+
+        if(pathFind && !pathFound)
+        {
+            nodePath.Clear();
+            GetNodes(movementTarget, transform.position);
+            if (!pathFound)
+            {
+                shipState = ShipState.Idle;
+            }
+        }
+    }
+
+    void GetNodes(Vector3 StartPosition, Vector3 TargetPosition)
+    {
+        Vector3 hitPos = new Vector3();
+        Vector3 nextNode = StartPosition;
+        GameObject[] foundNodes = GameObject.FindGameObjectsWithTag("Node");
+        int ClosestStartNode = 0;
+        for (int i = 0; i < 30; i++)
+        {
+            hitPos = Vector3.zero;
+            Debug.DrawLine(nextNode, TargetPosition, Color.blue);
+            if (Physics.Raycast(nextNode, TargetPosition - nextNode, out RaycastHit hit, (TargetPosition - nextNode).magnitude, sightMask))
+            {
+                hitPos = hit.point;
+            }
+            if (hitPos != Vector3.zero)
+            {
+                GameObject[] newNodes = FindAvailableNodes(foundNodes, nextNode);
+                ClosestStartNode = FindShortestDistance(newNodes, TargetPosition);
+                nextNode = newNodes[ClosestStartNode].transform.position;
+                nodePath.Add(newNodes[ClosestStartNode]);
+            }
+            else
+            {
+                pathFound = true;
+                pathFind = false;
+                currentNode = nodePath.Count - 1;
+                return;
+            }
+        }
+        pathFind = false;
     }
 
     GameObject[] FindAvailableNodes(GameObject[] Nodes, Vector3 StartPosition)
@@ -386,7 +396,7 @@ public class ShipAI : ShipSystem2
         {
             Vector3 CurrentNode = Nodes[n].transform.position - StartPosition;
             Vector3 hitPos = new Vector3();
-            if (Physics.Raycast(transform.position, CurrentNode, out RaycastHit hit, CurrentNode.magnitude, sightMask))
+            if (Physics.Raycast(StartPosition, CurrentNode, out RaycastHit hit, CurrentNode.magnitude, sightMask))
             {
                 hitPos = hit.point;
             }
@@ -403,7 +413,6 @@ public class ShipAI : ShipSystem2
         return newNodes;
     }
 
-
     int FindShortestDistance(GameObject[] Nodes, Vector3 StartPosition)
     {
         int ClosestNodeIndex = 0;
@@ -411,26 +420,22 @@ public class ShipAI : ShipSystem2
         {
             Vector3 CurrentNode = StartPosition - Nodes[n].transform.position;
             Vector3 ClosestNode = StartPosition - Nodes[ClosestNodeIndex].transform.position;
+            bool cancel = false;
             if (CurrentNode.magnitude < ClosestNode.magnitude)
             {
-                if (Nodes[n] != Node)
+                foreach (GameObject node in nodePath)
                 {
-                    bool cancel = false;
-                    foreach (GameObject node in previousNodes)
+                    if (Nodes[n] == node)
                     {
-                        if (Nodes[n] == node)
-                        {
-                            cancel = true;
-                        }
+                        cancel = true;
                     }
-                    if (!cancel)
-                    {
-                        ClosestNodeIndex = n;
-                    }
+                }
+                if (!cancel)
+                {
+                    ClosestNodeIndex = n;
                 }
             }
         }
-
         return ClosestNodeIndex;
     }
 
