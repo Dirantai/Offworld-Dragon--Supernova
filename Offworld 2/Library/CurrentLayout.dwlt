@@ -412,9 +412,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 1c3e0000
-      m_LastClickedID: 15900
-      m_ExpandedIDs: 4aeaffff8efbffff
+      m_SelectedIDs: 3c3f0000
+      m_LastClickedID: 16188
+      m_ExpandedIDs: 60a5ffff64a5ffff06a7ffff4efbffff203f00006c3f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -474,9 +474,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -125.91245, y: -40.22046, z: -127.28708}
+    m_Target: {x: -3.6507626, y: -52.665813, z: -82.47139}
     speed: 2
-    m_Value: {x: -125.91245, y: -40.22046, z: -127.28708}
+    m_Value: {x: -3.6507626, y: -52.665813, z: -82.47139}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -505,13 +505,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.108577915, y: 0.39168027, z: -0.046819855, w: 0.91265774}
+    m_Target: {x: 0.0017872094, y: 0.99799305, z: 0.02394091, w: -0.06255345}
     speed: 2
-    m_Value: {x: 0.10862962, y: 0.39024475, z: -0.046649035, w: 0.9130896}
+    m_Value: {x: 0.0017867811, y: 0.99775386, z: 0.02393517, w: -0.06253846}
   m_Size:
-    m_Target: 133.87154
+    m_Target: 46.3195
     speed: 2
-    m_Value: 133.87154
+    m_Value: 46.3195
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -621,10 +621,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 289
+    x: 378
     y: 73
-    width: 1741
-    height: 978
+    width: 1652
+    height: 980
   m_ViewDataDictionary: {fileID: 0}
   m_PosLeft: {x: 0, y: 0}
   m_PosRight: {x: 0, y: 0}
@@ -694,11 +694,11 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Models
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Models
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\Nate\Documents\GitHub\Offworld-Dragon--Supernova\Offworld
     2
@@ -706,9 +706,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 39}
-    m_SelectedIDs: b62e0000
-    m_LastClickedID: 11958
-    m_ExpandedIDs: 00000000782a000000ca9a3b
+    m_SelectedIDs: ec2f0000
+    m_LastClickedID: 12268
+    m_ExpandedIDs: 00000000982a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -736,7 +736,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000782a0000
+    m_ExpandedIDs: 00000000982a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -763,8 +763,8 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: 081300001e130000082a0000a4140000c81400007c130000ce0a0000562a00006a26000008140000607a0000441400004a1400006e140000ba130000de120000b2170000181000002e0e00008c95f7ffc40b00008e0e000014a7ffff5a190000601900008a170000280a000070080000862a00005ecfffffd842faffce780000240900007e0800004e060000fa1e00008e24000022220000842b0000cc0800001c170100a41c0100382a00008a2a00004a2a0000ce2a0000062e00008a3100009a4a000000000000
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: 081300001e130000082a0000a4140000c81400007c130000ce0a0000562a00006a26000008140000607a0000441400004a1400006e140000ba130000de120000b2170000181000002e0e00008c95f7ffc40b00008e0e000014a7ffff5a190000601900008a170000280a000070080000862a00005ecfffffd842faffce780000240900007e0800004e060000fa1e00008e24000022220000842b0000cc0800001c170100a41c0100382a00008a2a00004a2a0000ce2a0000062e00008a3100009a4a000000000000e22b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
