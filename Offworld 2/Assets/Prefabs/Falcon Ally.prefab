@@ -9768,6 +9768,12 @@ MonoBehaviour:
     missileRange: 0
     specialRange: 0
   shipState: 0
+  Node: {fileID: 0}
+  previousNodes: []
+  seenNodes: []
+  sightMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &526517895687912457
 GameObject:
   m_ObjectHideFlags: 0

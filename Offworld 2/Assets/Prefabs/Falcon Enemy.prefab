@@ -10380,6 +10380,12 @@ MonoBehaviour:
     missileRange: 5000
     specialRange: 0
   shipState: 0
+  Node: {fileID: 0}
+  previousNodes: []
+  seenNodes: []
+  sightMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &7898772761375308494
 MonoBehaviour:
   m_ObjectHideFlags: 0

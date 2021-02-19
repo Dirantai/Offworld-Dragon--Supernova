@@ -40,11 +40,10 @@ public class ShipAI : ShipSystem2
 
     private bool shoot;
 
-    private GameObject Node;
-    private List<GameObject> previousNodes = new List<GameObject>();
-    private GameObject[] seenNodes;
-    private bool PathFinding;
-    private LayerMask sightMask;
+    public GameObject Node;
+    public List<GameObject> previousNodes = new List<GameObject>();
+    public GameObject[] seenNodes;
+    public LayerMask sightMask;
 
     // Start is called before the first frame update
     public override void OnStart()
@@ -68,7 +67,7 @@ public class ShipAI : ShipSystem2
         if (shipTarget != null)
         {
             float distanceToShipTarget = (transform.position - shipTarget.position).magnitude;
-            if (!PathFinding)
+            if (shipState != ShipState.Pathing)
             {
                 movementTarget = shipTarget.position;
                 if (distanceToShipTarget < engagementRanges.gunRange * 0.1f)
@@ -100,13 +99,16 @@ public class ShipAI : ShipSystem2
                     }
                 }
             }
+            else
+            {
+                shoot = false;
+            }
 
             if (gunSystem != null)
             {
                 gunSystem.shipTarget = shipTarget;
                 gunSystem.Shoot = shoot;
             }
-
 
             if (chaseTimer > 0)
             {
@@ -118,7 +120,7 @@ public class ShipAI : ShipSystem2
                 if (shipState == ShipState.Breakingoff)
                 {
                     SelectTarget();
-                    if(chaseTimer % 2 == 0)
+                    if (chaseTimer % 2 == 0)
                     {
                         shipState = ShipState.Orbitting;
                     }
@@ -126,7 +128,7 @@ public class ShipAI : ShipSystem2
                     {
                         shipState = ShipState.Wrestling;
                     }
-                    
+
                 }
                 else
                 {
@@ -162,25 +164,8 @@ public class ShipAI : ShipSystem2
 
     public override void HandleMovement(Vector3 movementInput, Vector3 rotationInput)
     {
-
+        movementVector = movementTarget;
         float distanceToTarget = (movementTarget - transform.position).magnitude;
-
-        if (PathFinding)
-        {
-            if (Node != null)
-            {
-                movementVector = Node.transform.position;
-            }
-            else
-            {
-                Debug.Log("Failed!");
-                PathFinding = false;
-            }
-        }
-        else
-        {
-            movementVector = movementTarget;
-        }
         Vector3 trueMovementTarget = movementVector;
         Vector3 trueRotationTarget = movementTarget;
         Vector3 rollTarget = transform.up;
@@ -222,7 +207,7 @@ public class ShipAI : ShipSystem2
                 roll = true;
                 rollTarget = movementTarget;
                 trueMovementTarget = movementVector;
-                if (distanceToTarget < 100 && !PathFinding)
+                if (distanceToTarget < 100)
                 {
                     trueMovementTarget = ((transform.position - movementTarget).normalized * -80);
                 }
@@ -261,6 +246,45 @@ public class ShipAI : ShipSystem2
                     roll = true;
                 }
                 break;
+            case ShipState.Pathing:
+
+                player = null;
+                if (GameObject.FindGameObjectWithTag("Player") != null)
+                {
+                    player = GameObject.FindGameObjectWithTag("Player").transform;
+                }
+
+                if (player != null && transform.tag == "Ally")
+                {
+                    if (shipTarget == null)
+                    {
+                        movementTarget = player.position + (player.right * (wingmanPosition.x / 10)) + (player.forward * (wingmanPosition.z / 10));
+                    }
+                }
+                else
+                {
+                    if (shipTarget != null)
+                    {
+                        movementTarget = shipTarget.position;
+                    }
+                }
+
+                if (Node != null)
+                {
+                    movementVector = Node.transform.position;
+                }
+                distanceToTarget = (transform.position - movementVector).magnitude;
+                if (distanceToTarget > 50)
+                {
+                    boosting = true;
+                }
+                else
+                {
+                    boosting = false;
+                }
+                trueMovementTarget = movementVector;
+                trueRotationTarget = movementVector;
+                break;
         }
 
         movementInput = MoveToTarget(trueMovementTarget);
@@ -279,6 +303,7 @@ public class ShipAI : ShipSystem2
         RaycastHit hit;
         Vector3 hitPos = new Vector3();
         int ClosestNode = 0;
+        Debug.DrawLine(transform.position, movementTarget, Color.blue);
         if (Physics.Raycast(transform.position, TargetVector, out hit, TargetVector.magnitude, sightMask))
         {
             hitPos = hit.point;
@@ -286,7 +311,7 @@ public class ShipAI : ShipSystem2
 
         if (hitPos != Vector3.zero)
         {
-            PathFinding = true;
+            shipState = ShipState.Pathing;
             GameObject[] Nodes = GameObject.FindGameObjectsWithTag("Node");
             if (Node == null)
             {
@@ -305,29 +330,52 @@ public class ShipAI : ShipSystem2
             else
             {
                 Vector3 CurrentNodeVector = Node.transform.position - transform.position;
-                if (CurrentNodeVector.magnitude <= 3f)
+                if (CurrentNodeVector.magnitude <= 5)
                 {
-                    previousNodes.Add(Node);
+                    bool cancel = false;
+                    foreach (GameObject node in previousNodes)
+                    {
+                        if (Node == node)
+                        {
+                            cancel = true;
+                        }
+                    }
+                    if (!cancel)
+                    {
+                        previousNodes.Add(Node);
+                    }
                     seenNodes = FindAvailableNodes(Nodes, transform.position);
                     ClosestNode = FindShortestDistance(seenNodes, TargetVector + transform.position);
                     Node = seenNodes[ClosestNode];
                 }
-                hitPos = new Vector3();
+                Vector3 hitPos2 = new Vector3();
                 if (Physics.Raycast(transform.position, CurrentNodeVector, out hit, CurrentNodeVector.magnitude, sightMask))
                 {
-                    hitPos = hit.point;
+                    hitPos2 = hit.point;
                 }
-                if (hitPos != Vector3.zero)
+                if (hitPos2 != Vector3.zero)
                 {
-                    Node = null;
+                    seenNodes = FindAvailableNodes(Nodes, transform.position);
+                    ClosestNode = FindShortestDistance(seenNodes, TargetVector + transform.position);
+                    try
+                    {
+                        Node = seenNodes[ClosestNode];
+                    }
+                    catch
+                    {
+                        Debug.Log(ClosestNode + gameObject.name);
+                    }
                 }
             }
         }
         else
         {
+            if(shipState == ShipState.Pathing)
+            {
+                shipState = ShipState.Idle;
+            }
             previousNodes.Clear();
             Node = null;
-            PathFinding = false;
         }
     }
 
@@ -396,27 +444,6 @@ public class ShipAI : ShipSystem2
         input.x = CheckCollisionOnAxis(transform.forward, input.x);
         input.y = CheckCollisionOnAxis(transform.right, input.y);
         input.z = CheckCollisionOnAxis(transform.up, input.z);
-        //input = CheckCollisionOnVelocity(shipRigid.velocity, input);
-        return input;
-    }
-
-    Vector3 CheckCollisionOnVelocity(Vector3 direction, Vector3 input)
-    {
-        Vector3 position = Vector3.zero;
-        Debug.DrawRay(transform.position, direction * Mathf.Clamp(shipRigid.velocity.magnitude, 5, 20), Color.green);
-        if (shipRigid.SweepTest(direction.normalized, out RaycastHit hitInfo, Mathf.Clamp(shipRigid.velocity.magnitude, 5, 20), QueryTriggerInteraction.Ignore))
-        {
-            position = hitInfo.point;
-        }
-
-        if (position != Vector3.zero)
-        {
-            Debug.Log("Hit!");
-            float forwardVelocity = Vector3.Dot(transform.forward, position - transform.position);
-            float rightVelocity = Vector3.Dot(-transform.right, position - transform.position);
-            float upVelocity = Vector3.Dot(-transform.up, position - transform.position);
-            input = new Vector3(Mathf.Clamp(forwardVelocity * 10, -1, 1), Mathf.Clamp(-rightVelocity * 10, -1, 1), Mathf.Clamp(-upVelocity * 10, -1, 1));
-        }
         return input;
     }
 
@@ -435,17 +462,17 @@ public class ShipAI : ShipSystem2
         {
             negative = directionalSpeed;
         }
-        Debug.DrawRay(transform.position, direction * Mathf.Clamp(positive, 5, 20), Color.green);
-        Debug.DrawRay(transform.position, -direction * Mathf.Clamp(-negative, 5, 20), Color.red);
+        Debug.DrawRay(transform.position, direction * Mathf.Clamp(positive, 2, 20), Color.green);
+        Debug.DrawRay(transform.position, -direction * Mathf.Clamp(-negative, 2, 20), Color.red);
 
-        if (shipRigid.SweepTest(direction, out RaycastHit hitInfo, Mathf.Clamp(positive, 5, 20), QueryTriggerInteraction.Ignore))
+        if (shipRigid.SweepTest(direction, out RaycastHit hitInfo, Mathf.Clamp(positive, 2, 20), QueryTriggerInteraction.Ignore))
         {
             //positive = hitInfo.distance;
             collider = hitInfo.collider;
         }
 
 
-        if (shipRigid.SweepTest(-direction, out hitInfo, Mathf.Clamp(-negative, 5, 20), QueryTriggerInteraction.Ignore))
+        if (shipRigid.SweepTest(-direction, out hitInfo, Mathf.Clamp(-negative, 2, 20), QueryTriggerInteraction.Ignore))
         {
             //negative = hitInfo.distance;
             collider2 = hitInfo.collider;
@@ -453,9 +480,9 @@ public class ShipAI : ShipSystem2
 
         if (collider != null)
         {
-
             if (collider2 != null)
             {
+                boosting = false;
                 if (0.1f + positive > 0.1f - negative)
                 {
                     directionInput = 1;
@@ -467,11 +494,13 @@ public class ShipAI : ShipSystem2
             }
             else
             {
+                boosting = true;
                 directionInput = -1;
             }
         }
         else if (collider2 != null)
         {
+            boosting = true;
             directionInput = 1;
         }
         return directionInput;
