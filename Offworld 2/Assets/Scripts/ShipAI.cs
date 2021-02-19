@@ -41,8 +41,8 @@ public class ShipAI : ShipSystem2
 
     private bool shoot;
 
-    public GameObject Node;
-    public List<GameObject> nodePath= new List<GameObject>();
+    private GameObject Node;
+    private List<GameObject> nodePath= new List<GameObject>();
     public LayerMask sightMask;
 
     // Start is called before the first frame update
@@ -292,8 +292,8 @@ public class ShipAI : ShipSystem2
         base.HandleMovement(movementInput, rotationInput);
     }
 
-    public bool pathFound;
-    public bool pathFind;
+    private bool pathFound;
+    private bool pathFind;
     void PathFinder(Vector3 TargetVector)
     {
         RaycastHit hit;
