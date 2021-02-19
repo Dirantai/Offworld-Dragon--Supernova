@@ -66,6 +66,7 @@
     <Compile Include="Assets\DecayOverTIme.cs" />
     <Compile Include="Assets\HomingModule.cs" />
     <Compile Include="Assets\MissileSystem.cs" />
+    <Compile Include="Assets\PathfinderTest.cs" />
     <Compile Include="Assets\Scripts\AISpawner.cs" />
     <Compile Include="Assets\Scripts\AITest.cs" />
     <Compile Include="Assets\Scripts\AsteroidCreator.cs" />
