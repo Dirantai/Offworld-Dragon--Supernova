@@ -116,7 +116,7 @@ public class ShipSystem2 : BasicForceSystem
 
     public virtual void OnUpdate()
     {
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButton("Fire2") && missiles != null)
         {
             missiles.shipTarget = gunSystem.shipTarget;
             missiles.FireMissile();
