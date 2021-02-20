@@ -63,8 +63,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AISniperAttack.cs" />
     <Compile Include="Assets\DecayOverTIme.cs" />
     <Compile Include="Assets\HomingModule.cs" />
+    <Compile Include="Assets\LaserDamage.cs" />
     <Compile Include="Assets\MissileSystem.cs" />
     <Compile Include="Assets\PathfinderTest.cs" />
     <Compile Include="Assets\Scripts\AISpawner.cs" />
