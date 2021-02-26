@@ -189,21 +189,27 @@ public class ShipSystem2 : BasicForceSystem
     {
         if(collision.transform.tag == "Bullet")
         {
-            if(currentShieldHealth > 0)
-            {
-                currentShieldHealth -= collision.transform.GetComponent<Bullet>().Damage / shipStats.shieldGrade;
-                currentRegenTime = shipStats.shieldDelay;
-            }
-            else
-            {
-                currentShieldHealth = 0;
-                currentHullHealth -= collision.transform.GetComponent<Bullet>().Damage / shipStats.hullGrade;
-            }
+            OnDamage(collision.transform.GetComponent<Bullet>().Damage);
+        }
+    }
+
+    public void OnDamage(float damage)
+    {
+        if (currentShieldHealth > 0)
+        {
+            currentShieldHealth -= damage / shipStats.shieldGrade;
+            currentRegenTime = shipStats.shieldDelay;
+        }
+        else
+        {
+            currentShieldHealth = 0;
+            currentHullHealth -= damage / shipStats.hullGrade;
         }
     }
 
     public virtual void OnDeath()
     {
+        currentHullHealth = 0;
         Transform camRig = GameObject.FindGameObjectWithTag("CamRig").transform;
         camRig.transform.parent = null;
     }
