@@ -11,18 +11,12 @@ public class LaserDamage : MonoBehaviour
     private GameObject target;
     private float timer;
     private float decayTimer;
+    public float decay;
     
 
     private void Start()
     {
-        Destroy(gameObject, 3);
-    }
-
-    
-
-    public void SetTarget(GameObject currentTarget)
-    {
-        target = currentTarget;
+        Destroy(gameObject, decay);
     }
 
     // Update is called once per frame
@@ -31,16 +25,16 @@ public class LaserDamage : MonoBehaviour
         Vector3 hitPos = Vector3.zero;
         float widthMultiplier = 1;
 
-        if (decayTimer > 2.5f)
+        if (decayTimer > decay - 0.5f)
         {
-            widthMultiplier -= (decayTimer - 2.5f) / 0.5f;
+            widthMultiplier -= (decayTimer - (decay - 0.5f)) / 0.5f;
             transform.GetChild(0).localScale = new Vector3(15 * widthMultiplier, 3000, 15 * widthMultiplier);
         }
 
-        if (Physics.SphereCast(transform.position, 1 * widthMultiplier, transform.forward, out RaycastHit rayHit, 9000, laserMask))
+        if (Physics.SphereCast(transform.position, 0.5f * widthMultiplier, transform.forward, out RaycastHit rayHit, 1000, laserMask))
         {
             hitPos = rayHit.point;
-            //target = rayHit.collider.gameObject;
+            target = rayHit.collider.gameObject;
         }
 
         decayTimer += Time.deltaTime;
@@ -49,10 +43,14 @@ public class LaserDamage : MonoBehaviour
 
         if(hitPos != Vector3.zero)
         {
-            if (timer <= 0)
+            ShipSystem2 temp = target.gameObject.GetComponentInParent<ShipSystem2>();
+            if (temp != null)
             {
-                timer = damageInterval;
-                target.GetComponent<ShipSystem2>().OnDamage(laserDamage);
+                if (timer <= 0)
+                {
+                    timer = damageInterval;
+                    temp.OnDamage(laserDamage);
+                }
             }
         }
         if(timer > 0)

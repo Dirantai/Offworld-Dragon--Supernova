@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 3422577258249998691}
   - component: {fileID: 8824284903377509200}
   m_Layer: 12
-  m_Name: TestBullet
+  m_Name: Player Small
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c0084c04e501748bad4d0665abbb03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecayTime: 3
+  DecayTime: 0.3
   Damage: 0
   Rigid: {fileID: 3422577258249998690}
   BulletVelocity: 100

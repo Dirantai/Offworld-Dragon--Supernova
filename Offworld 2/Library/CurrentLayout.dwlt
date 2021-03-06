@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 544}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -45,7 +45,7 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1357
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 544}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_VSyncEnabled: 0
   m_MaximizeOnPlay: 0
-  m_Gizmos: 1
+  m_Gizmos: 0
   m_Stats: 1
   m_SelectedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_TargetDisplay: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -412,9 +412,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 6cd2f8ff
-      m_LastClickedID: -470420
-      m_ExpandedIDs: 6cd2f8ffd48cfaff10ed01008aed01009aed0100a4ed0100aaed0100faed01000eee010012ee010036ee010054ee0100b6ee0100daee0100e4ee0100fcee0100
+      m_SelectedIDs: e02d0000
+      m_LastClickedID: 0
+      m_ExpandedIDs: 8efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -467,16 +467,16 @@ MonoBehaviour:
   m_ShowContextualTools: 0
   m_WindowGUID: 325f1b53f0f213c4b8e2be7756b9677b
   m_Gizmos: 1
-  m_SceneIsLit: 0
+  m_SceneIsLit: 1
   m_SceneLighting: 1
   m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.4760036, y: 6.06602, z: 3.315195}
+    m_Target: {x: -1280.6968, y: 603.9763, z: -1262.363}
     speed: 2
-    m_Value: {x: 1.4760036, y: 6.06602, z: 3.315195}
+    m_Value: {x: -1280.6968, y: 603.9763, z: -1262.363}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_SceneViewState:
     showFog: 1
     showMaterialUpdate: 1
-    showSkybox: 0
+    showSkybox: 1
     showFlares: 1
     showImageEffects: 1
     showParticleSystems: 1
@@ -505,13 +505,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.09583854, y: -0.42972282, z: 0.04603366, w: 0.89695716}
+    m_Target: {x: 0.2380025, y: -0.39618936, z: 0.1071378, w: 0.88057506}
     speed: 2
-    m_Value: {x: 0.095814675, y: -0.42961583, z: 0.046022203, w: 0.8967338}
+    m_Value: {x: -0.23800251, y: 0.3961894, z: -0.10713781, w: -0.88057506}
   m_Size:
-    m_Target: 5.0079374
+    m_Target: 4282.3853
     speed: 2
-    m_Value: 5.0079374
+    m_Value: 4282.3853
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -694,11 +694,11 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\Nate\Documents\GitHub\Offworld-Dragon--Supernova\Offworld
     2
@@ -706,9 +706,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 39}
-    m_SelectedIDs: be2e0000
-    m_LastClickedID: 11966
-    m_ExpandedIDs: 000000007c2a000000ca9a3b
+    m_SelectedIDs: 822a0000
+    m_LastClickedID: 10882
+    m_ExpandedIDs: 00000000822a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -736,7 +736,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007c2a0000
+    m_ExpandedIDs: 00000000822a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 081300001e130000082a0000a4140000c81400007c130000ce0a0000562a00006a26000008140000607a0000441400004a1400006e140000ba130000de120000b2170000181000002e0e00008c95f7ffc40b00008e0e000014a7ffff5a190000601900008a170000280a000070080000862a00005ecfffffd842faffce780000240900007e0800004e060000fa1e00008e24000022220000842b0000cc0800001c170100a41c0100382a00008a2a00004a2a0000ce2a0000062e00008a3100009a4a000000000000e22b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0

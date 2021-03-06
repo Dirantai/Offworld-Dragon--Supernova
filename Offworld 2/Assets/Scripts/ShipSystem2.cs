@@ -6,6 +6,7 @@ public class ShipSystem2 : BasicForceSystem
 {
     public Rigidbody shipRigid;
     public Transform shipTarget;
+    public Transform FPSCameraRig;
     public GameObject deathExplosion;
 
     public bool visuals;
@@ -140,7 +141,7 @@ public class ShipSystem2 : BasicForceSystem
             modifier = 25;
         }
         shipModel.localRotation = Quaternion.Lerp(shipModel.localRotation, Quaternion.Euler(yOffset * 25 / modifier, -xOffset * 30 / modifier, (xOffset * 50 + rotationalInput.x * 10) / modifier), 6 * Time.deltaTime);
-
+        FPSCameraRig.localRotation = Quaternion.Lerp(FPSCameraRig.localRotation, Quaternion.Euler(yOffset * 25 / modifier, -xOffset * 30 / modifier, 0), 6 * Time.deltaTime);
         float xPosOffset = Vector3.Dot(transform.right, shipRigid.velocity);
         float yPosOffset = Vector3.Dot(transform.up, shipRigid.velocity);
         float zPosOffset = Vector3.Dot(transform.forward, shipRigid.velocity);

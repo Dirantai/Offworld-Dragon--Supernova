@@ -10262,6 +10262,7 @@ MonoBehaviour:
   thrusterEffects: []
   shipRigid: {fileID: 6717758502738204915}
   shipTarget: {fileID: 0}
+  FPSCameraRig: {fileID: 0}
   deathExplosion: {fileID: 0}
   visuals: 0
   mutedVisuals: 0
@@ -10342,6 +10343,7 @@ MonoBehaviour:
   thrusterEffects: []
   shipRigid: {fileID: 6717758502738204915}
   shipTarget: {fileID: 0}
+  FPSCameraRig: {fileID: 0}
   deathExplosion: {fileID: 8196708332552045538, guid: 1b174c3a12df85048a3f5cf2d5e53a52,
     type: 3}
   visuals: 0
@@ -10366,8 +10368,8 @@ MonoBehaviour:
   currentHullHealth: 0
   active: 0
   shipStats:
-    shieldGrade: 75
-    hullGrade: 50
+    shieldGrade: 50
+    hullGrade: 25
     shieldDelay: 2
     shieldRechargeRate: 4
   boosting: 0
@@ -10380,9 +10382,6 @@ MonoBehaviour:
     missileRange: 5000
     specialRange: 0
   shipState: 0
-  Node: {fileID: 0}
-  previousNodes: []
-  seenNodes: []
   sightMask:
     serializedVersion: 2
     m_Bits: 1
@@ -15239,8 +15238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponValues:
-    baseDamage: 10
-    projectileSpeed: 200
+    baseDamage: 30
+    projectileSpeed: 250
     fireRate: 600
     spread: 0.5
     bulletModel: {fileID: 5150087107705492506, guid: e466a34403962d543a37289c958d4387,
@@ -30032,8 +30031,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponValues:
-    baseDamage: 10
-    projectileSpeed: 200
+    baseDamage: 30
+    projectileSpeed: 250
     fireRate: 600
     spread: 0.5
     bulletModel: {fileID: 5150087107705492506, guid: e466a34403962d543a37289c958d4387,

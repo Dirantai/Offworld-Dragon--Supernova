@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserMask:
     serializedVersion: 2
-    m_Bits: 512
-  laserDamage: 100
+    m_Bits: 513
+  laserDamage: 200
   damageInterval: 0.1
+  decay: 3
