@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3422577258249998688, guid: b6a90e0f2ab7b4d4ebbe3d77af6e86ae,
         type: 3}
       propertyPath: m_Name
-      value: TestBullet Variant
+      value: Enemy Small
       objectReference: {fileID: 0}
     - target: {fileID: 3422577258249998688, guid: b6a90e0f2ab7b4d4ebbe3d77af6e86ae,
         type: 3}
@@ -20,17 +20,17 @@ PrefabInstance:
     - target: {fileID: 3422577258249998701, guid: b6a90e0f2ab7b4d4ebbe3d77af6e86ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.3984394
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3422577258249998701, guid: b6a90e0f2ab7b4d4ebbe3d77af6e86ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.89926803
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3422577258249998701, guid: b6a90e0f2ab7b4d4ebbe3d77af6e86ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.494177
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3422577258249998701, guid: b6a90e0f2ab7b4d4ebbe3d77af6e86ae,
         type: 3}

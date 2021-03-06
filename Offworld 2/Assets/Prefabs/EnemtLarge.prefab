@@ -10,22 +10,22 @@ PrefabInstance:
     - target: {fileID: 5150087107705492506, guid: e466a34403962d543a37289c958d4387,
         type: 3}
       propertyPath: m_Name
-      value: TestBullet Variant (1) Variant
+      value: EnemtLarge
       objectReference: {fileID: 0}
     - target: {fileID: 5150087107705492503, guid: e466a34403962d543a37289c958d4387,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.252
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5150087107705492503, guid: e466a34403962d543a37289c958d4387,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.67
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5150087107705492503, guid: e466a34403962d543a37289c958d4387,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.8487502
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5150087107705492503, guid: e466a34403962d543a37289c958d4387,
         type: 3}

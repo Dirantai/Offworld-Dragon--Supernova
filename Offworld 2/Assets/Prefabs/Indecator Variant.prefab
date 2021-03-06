@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 4369729392203059823, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
       propertyPath: m_Name
-      value: Indecator
+      value: Indecator Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4369729392203059822, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
@@ -25,7 +25,7 @@ PrefabInstance:
     - target: {fileID: 4369729392203059822, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.4585
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4369729392203059822, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
@@ -70,12 +70,12 @@ PrefabInstance:
     - target: {fileID: 4369729392203059822, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -882.1259
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4369729392203059822, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -496.86935
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4369729392203059822, guid: c0e60427ceefd8d4aadffd3b31b5c7fb,
         type: 3}
