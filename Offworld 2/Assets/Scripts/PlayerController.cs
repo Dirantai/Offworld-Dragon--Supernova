@@ -11,7 +11,7 @@ public class PlayerController : BasicForceSystem
     public Rigidbody shipRigid;
 
 
-    public MovementValues MovementValues;
+    public MovementValues movementValues;
 
     public float jumpForce;
     public float rotationalSensitivity;
@@ -24,7 +24,7 @@ public class PlayerController : BasicForceSystem
     public float groundCheckDistance;
     public bool visuals;
 
-    public Transform camera;
+    public Transform playerCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -118,15 +118,16 @@ public class PlayerController : BasicForceSystem
     public virtual void HandleMovement(Vector3 movementInput, float rotationInput)
     {
 
-        SetMovementValues(MovementValues);
+        SetMovementValues(movementValues);
         SetVelocity(shipRigid.velocity);
-        Vector3 maxSpeedVector = new Vector3(MovementValues.maxSpeedVector.x, MovementValues.maxSpeedVector.y, MovementValues.maxSpeedVector.z);
+        Vector3 maxSpeedVector = new Vector3(movementValues.maxSpeedVector.x, movementValues.maxSpeedVector.y, movementValues.maxSpeedVector.z);
+        Vector3 forceVector = new Vector3(movementValues.maxForceVector.x, movementValues.maxForceVector.y, movementValues.maxForceVector.z);
         //if (boosting)
         //{
         //    maxSpeedVector = maxSpeedVector * shipMovementValues.speedMultiplier;
         //}
 
-        Vector3 finalVector = CalculateFinalInput(movementInput, maxSpeedVector);
+        Vector3 finalVector = CalculateFinalInput(movementInput, maxSpeedVector, forceVector);
         finalVector = new Vector3(finalVector.x, 0, finalVector.z);
         shipRigid.AddForce(finalVector);
 
@@ -136,7 +137,7 @@ public class PlayerController : BasicForceSystem
         }
 
         pitch += (Input.GetAxis("Mouse Y") * rotationalSensitivity);
-        camera.localRotation = Quaternion.Euler(Mathf.Clamp(-pitch, -80, 80), 0, 0);
+        playerCamera.localRotation = Quaternion.Euler(Mathf.Clamp(-pitch, -80, 80), 0, 0);
         transform.Rotate(0, rotationInput, 0);
     }
 }

@@ -16,7 +16,7 @@ public class MissileSystem : MonoBehaviour
         
     }
 
-    public void FireMissile()
+    public void FireMissile(Transform shipTarget)
     {
         if (missileValues.loaded)
         {

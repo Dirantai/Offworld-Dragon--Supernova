@@ -222,7 +222,7 @@ public class AITest : ShipSystem2
     public Vector3 testPosition;
     private float randomNumber;
 
-    public override void HandleMovement(Vector3 movementInput, Vector3 rotationInput)
+    public override void HandleMovement(Vector3 movementInput, Vector3 rotationInput, float maxSpeedMultiplier)
     {
         movementInput = new Vector3();
         rotationInput = new Vector3();
@@ -310,7 +310,7 @@ public class AITest : ShipSystem2
 
         movementInput = HandleCollisionDetection(movementInput);
         currentInput = Vector3.Lerp(currentInput, movementInput, Time.deltaTime);
-        base.HandleMovement(movementInput, rotationInput);
+        base.HandleMovement(movementInput, rotationInput, 1);
     }
 
 

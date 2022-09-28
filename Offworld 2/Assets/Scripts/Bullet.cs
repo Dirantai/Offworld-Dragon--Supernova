@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour {
     public Rigidbody Rigid; //The physics object
     public float BulletVelocity;
     public HitMarkerSystem HitMarkerDetector; //The class that the bullet tells if it hits an enemy
+    public ShipSystem2 shooter;
     public bool BypassShields;
     public GameObject CollisionEffect; //The effect that is shown when the bullet collides
     public Transform effect;

@@ -8,6 +8,7 @@ public class FreeCam : MonoBehaviour
 
     public Transform thirdPersonTrans;
     public Transform firstPersonTrans;
+    public CameraShake shakeSystem;
     public GameObject radarUI;
     public ShipSystem2 playerSystem;
     public SimpleCameraController freeCamController;
@@ -18,7 +19,7 @@ public class FreeCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (playerSystem.inputs["Free Cam"].triggered)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             active = !active;
@@ -26,7 +27,7 @@ public class FreeCam : MonoBehaviour
 
         Transform parent = null;
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (playerSystem.inputs["Change Camera"].triggered)
         {
             firstPerson = !firstPerson;
         }
@@ -35,19 +36,22 @@ public class FreeCam : MonoBehaviour
         {
             radarUI.SetActive(false);
             parent = firstPersonTrans;
+            playerSystem.mutedVisuals = true;
         }
         else
         {
             radarUI.SetActive(true);
             parent = thirdPersonTrans;
+            playerSystem.mutedVisuals = false;
         }
+
+        shakeSystem.setParent(parent);
 
         if (playerSystem == null)
         {
             if (!died)
             {
                 died = true;
-                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
             active = true;
         }
@@ -64,12 +68,11 @@ public class FreeCam : MonoBehaviour
         else
         {
             transform.parent = parent;
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
-            if (playerSystem != null)
+            if (playerSystem != null && transform.localPosition != Vector3.zero)
             {
                 playerSystem.active = true;
             }
+            transform.localPosition = Vector3.zero;
             freeCamController.enabled = false;
         }
     }

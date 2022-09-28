@@ -108,7 +108,7 @@ public class Turret : MonoBehaviour {
 
     void ApplyRotation(Transform Base, bool Barrel, Vector3 PerpendicularVector, float MaxTurnLimit, float MinTurnLimit, ref float Angle, Vector3 AimPoint, float Sensitivity)
     {
-        float Displacement = Vector3.Dot(PerpendicularVector / (AimPoint - Base.position).magnitude, AimPoint - Base.position);
+        float Displacement = Vector3.Dot(PerpendicularVector * 1000 / (AimPoint * 1000 - Base.position * 1000).magnitude, AimPoint - Base.position);
         Angle += Displacement * Sensitivity;
         Angle = Mathf.Clamp(Angle, MinTurnLimit, MaxTurnLimit);
         if (!Barrel)

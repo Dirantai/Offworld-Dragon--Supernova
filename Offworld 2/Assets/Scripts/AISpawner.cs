@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class AISpawner : MonoBehaviour
@@ -32,17 +33,20 @@ public class AISpawner : MonoBehaviour
     public ShipAI AIParams;
 
     private bool menuOpen;
+    public InputActionAsset inputs;
+    public Transform player;
 
     // Start is called before the first frame update
     void Start()
     {
+        inputs.actionMaps[2].Enable();
         currentType = 315;
     }
 
 
     public void SpawnNewAI()
     {
-        Vector3 randomPosition = new Vector3(Random.Range(-500, 500), Random.Range(-500, 500), Random.Range(-500, 500));
+        Vector3 randomPosition = player.position + new Vector3( Random.Range(-500, 500), Random.Range(-500, 500), Random.Range(-500, 500));
         GameObject g = Instantiate(AITypes[currentType], randomPosition, Quaternion.identity);
         if (!defaultStats)
         {
@@ -139,6 +143,6 @@ public class AISpawner : MonoBehaviour
         
         UIMenu.SetActive(menuOpen);
 
-        if (Input.GetKeyDown(KeyCode.Equals)) menuOpen = !menuOpen;
+        if (inputs["ShowForge"].triggered) menuOpen = !menuOpen;
     }
 }

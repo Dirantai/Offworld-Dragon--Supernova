@@ -41,8 +41,8 @@ public class ShipAI : ShipSystem2
 
     private bool shoot;
 
-    private GameObject Node;
-    private List<GameObject> nodePath= new List<GameObject>();
+    private Vector3 Node;
+    public List<Vector3> nodePath= new List<Vector3>();
     public LayerMask sightMask;
 
     // Start is called before the first frame update
@@ -92,11 +92,7 @@ public class ShipAI : ShipSystem2
 
                 if(distanceToShipTarget < engagementRanges.missileRange * 0.1f)
                 {
-                    if (missiles != null)
-                    {
-                        missiles.shipTarget = shipTarget;
-                        missiles.FireMissile();
-                    }
+                    missiles?.FireMissile(shipTarget);
                 }
             }
             else
@@ -134,6 +130,10 @@ public class ShipAI : ShipSystem2
                 {
                     shipState = ShipState.Breakingoff;
                 }
+
+                if(distanceToShipTarget > 100){
+                    shipState = ShipState.Orbitting;
+                }
                 movementTarget = Vector3.zero;
 
             }
@@ -163,7 +163,7 @@ public class ShipAI : ShipSystem2
         wingmanPosition = position;
     }
 
-    public override void HandleMovement(Vector3 movementInput, Vector3 rotationInput)
+    public override void HandleMovement(Vector3 movementInput, Vector3 rotationInput, float maxSpeedMultiplier)
     {
         movementVector = movementTarget;
         float distanceToTarget = (movementTarget - transform.position).magnitude;
@@ -197,14 +197,12 @@ public class ShipAI : ShipSystem2
         {
             case ShipState.Breakingoff:
 
-                boosting = true;
                 trueMovementTarget = (transform.position + (transform.forward * 10) + (transform.right * direction));
                 trueRotationTarget = trueMovementTarget;
 
                 break;
             case ShipState.Orbitting:
 
-                boosting = false;
                 roll = true;
                 rollTarget = movementTarget;
                 trueMovementTarget = movementVector;
@@ -217,7 +215,6 @@ public class ShipAI : ShipSystem2
                 break;
             case ShipState.Wrestling:
 
-                boosting = true;
                 movementVector = new Vector3(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
                 if (shipTarget != null)
                 {
@@ -239,16 +236,17 @@ public class ShipAI : ShipSystem2
 
                 if (player != null && transform.tag == "Ally")
                 {
-                    boosting = player.GetComponent<ShipSystem2>().boosting;
                     trueMovementTarget = player.position + (player.right * (wingmanPosition.x / 10)) + (player.forward * (wingmanPosition.z / 10));
-                    movementTarget = trueMovementTarget;
+                    //movementTarget = trueMovementTarget;
                     trueRotationTarget = player.forward * 10 + transform.position;
-                    rollTarget = trueMovementTarget + player.up;
+                    rollTarget = transform.position + player.up;
+                    maxSpeedMultiplier = Mathf.Clamp((distanceToTarget / 30), 0.01f, 1);
+                    Debug.Log(maxSpeedMultiplier);
                     roll = true;
                 }
                 break;
             case ShipState.Pathing:
-                boosting = false;
+                maxSpeedMultiplier = 0.3f;
                 player = null;
                 if (GameObject.FindGameObjectWithTag("Player") != null)
                 {
@@ -272,7 +270,7 @@ public class ShipAI : ShipSystem2
 
                 if (Node != null)
                 {
-                    movementVector = Node.transform.position;
+                    movementVector = Node;
                 }
                 distanceToTarget = (transform.position - movementVector).magnitude;
                 trueMovementTarget = movementVector;
@@ -289,7 +287,8 @@ public class ShipAI : ShipSystem2
         }
 
         movementInput = HandleCollisionDetection(movementInput);
-        base.HandleMovement(movementInput, rotationInput);
+        
+        base.HandleMovement(movementInput, rotationInput, maxSpeedMultiplier);
     }
 
     private bool pathFound;
@@ -299,57 +298,90 @@ public class ShipAI : ShipSystem2
         RaycastHit hit;
         Vector3 hitPos = new Vector3();
         Debug.DrawLine(transform.position, movementTarget, Color.blue);
+        //Check to see if the AI can reach the target with a raycast.
         if (Physics.Raycast(transform.position, TargetVector, out hit, TargetVector.magnitude, sightMask))
         {
             hitPos = hit.point;
         }
 
+        //If there is an obstacle, the hitPos will not be at (0,0,0).
         if (hitPos != Vector3.zero)
         {
+            //Debugging purposes, shows the path found.
+            for(int i=0;i<nodePath.Count - 1;i++){
+             Debug.DrawLine(nodePath[i], nodePath[i+1], Color.yellow);
+            }
+
+            //Force the shipstate into pathing
             shipState = ShipState.Pathing;
-            pathFind = true;
+            //find a path
+
+            //if a path is found, begin the movement
             if (pathFound)
             {
+                //Since the nodePath list is used like a Stack, the last inserted object will be the first port of the path.
+                //this checks if the currentNode is within the nodePath list. If it isn't, find that fucking path again.
                 if (currentNode < nodePath.Count && currentNode >= 0)
                 {
+                    //get the node
                     Node = nodePath[currentNode];
-                    if ((transform.position - Node.transform.position).magnitude < 1)
+                    if (Physics.Raycast(transform.position, Node - transform.position, out hit, (Node - transform.position).magnitude, sightMask))
+                    {
+                        hitPos = hit.point;
+                    }
+                    //if the AI reaches within a certain distance of the node, move on to the enxt one
+                    if ((transform.position - Node).magnitude <= 10)
                     {
                         currentNode -= 1;
                     }
                     hitPos = Vector3.zero;
-                    if (Physics.Raycast(transform.position, Node.transform.position - transform.position, out hit, (Node.transform.position - transform.position).magnitude, sightMask))
+                    //check to see if the next node is reachable in the path
+                    if (Physics.Raycast(transform.position, Node - transform.position, out hit, (Node - transform.position).magnitude, sightMask))
                     {
                         hitPos = hit.point;
                     }
+                    //if it isn't, recalculate the path.
                     if (hitPos != Vector3.zero)
                     {
-                        pathFound = false;
-                        pathFind = true;
+                        currentNode -= 1;
+                        if(currentNode < 0){
+                            pathFound = false;
+                            pathFind = true;
+                        }
                     }
                 }
                 else
                 {
+                    //stupid thought there was a path.
                     pathFound = false;
                 }
+            }else{
+                pathFind = true;
             }
         }
         else
         {
+            //reset the pathfinder if it is no longer needed.
             if(shipState == ShipState.Pathing)
             {
                 shipState = ShipState.Idle;
             }
+            //there won't be more than 315 nodes, right? Right???
             currentNode = 315;
             nodePath.Clear();
             pathFound = false;
             pathFind = false;
         }
 
+        //if There isn't a path found and a path is needed, run this.
         if(pathFind && !pathFound)
         {
+            //clear the nodepath to get a fresh one
             nodePath.Clear();
+            nodePath.Add(movementTarget);
+            //Generate that node path baby. Start from the target to the AI's position
             GetNodes(movementTarget, transform.position);
+            //if a path still cannot be found, the AI will Idle about until a path can be found.
             if (!pathFound)
             {
                 shipState = ShipState.Idle;
@@ -357,33 +389,48 @@ public class ShipAI : ShipSystem2
         }
     }
 
+    //This is where the magic happens.
     void GetNodes(Vector3 StartPosition, Vector3 TargetPosition)
     {
         Vector3 hitPos = new Vector3();
+        //set the starting node as the starting position. Essentially treats the target position as a node itself.
         Vector3 nextNode = StartPosition;
+        //Find all of the nodes in the scene.
         GameObject[] foundNodes = GameObject.FindGameObjectsWithTag("Node");
         int ClosestStartNode = 0;
-        for (int i = 0; i < 30; i++)
+        //Nodepaths will have a maximum length of 30. I don't know why this arbitrary number is here
+        //ask past me.
+        int i=0;
+        while(i < 30 && !pathFound)
         {
+            //check if the node can be seen by the AI
             hitPos = Vector3.zero;
             Debug.DrawLine(nextNode, TargetPosition, Color.blue);
             if (Physics.Raycast(nextNode, TargetPosition - nextNode, out RaycastHit hit, (TargetPosition - nextNode).magnitude, sightMask))
             {
                 hitPos = hit.point;
             }
+
             if (hitPos != Vector3.zero)
             {
+                //if it isn't, continue pathing
+                //first, find the next nodes that can be reached from the current node.
                 GameObject[] newNodes = FindAvailableNodes(foundNodes, nextNode);
-                ClosestStartNode = FindShortestDistance(newNodes, TargetPosition);
+                //Then, find the closest node out of the available nodes to the goal
+                ClosestStartNode = FindShortestDistance(newNodes, TargetPosition, transform.position);
+                //set the next node to be iterated
                 nextNode = newNodes[ClosestStartNode].transform.position;
-                nodePath.Add(newNodes[ClosestStartNode]);
+                //save the node in the path.
+                nodePath.Add(newNodes[ClosestStartNode].transform.position);
+                //repeat for 30 times or a clear path is found.
             }
             else
             {
+                //if it is, then a valid path has been found and the AI can proceed.
                 pathFound = true;
-                pathFind = false;
+                nodePath.Add(transform.position);
+                nodePath = BerzierTest.UpdateLine(nodePath);
                 currentNode = nodePath.Count - 1;
-                return;
             }
         }
         pathFind = false;
@@ -391,20 +438,25 @@ public class ShipAI : ShipSystem2
 
     GameObject[] FindAvailableNodes(GameObject[] Nodes, Vector3 StartPosition)
     {
+        //Create a new list.
         List<GameObject> availableNodes = new List<GameObject>();
+        //loop through all nodes given.
         for (int n = 0; n < Nodes.Length; n++)
         {
+            //Get the vector from the current node to the checked Node and check if it is a clear vector,
             Vector3 CurrentNode = Nodes[n].transform.position - StartPosition;
             Vector3 hitPos = new Vector3();
             if (Physics.Raycast(StartPosition, CurrentNode, out RaycastHit hit, CurrentNode.magnitude, sightMask))
             {
                 hitPos = hit.point;
             }
+            //if the node can be reached, it is an available
             if (hitPos == Vector3.zero)
             {
                 availableNodes.Add(Nodes[n]);
             }
         }
+        //convert from list to Array, I don't know why I did this, my past monkey brain wanted things to be this stupid.
         GameObject[] newNodes = new GameObject[availableNodes.Count];
         for (int n = 0; n < newNodes.Length; n++)
         {
@@ -413,34 +465,45 @@ public class ShipAI : ShipSystem2
         return newNodes;
     }
 
-    int FindShortestDistance(GameObject[] Nodes, Vector3 StartPosition)
+    int FindShortestDistance(GameObject[] Nodes, Vector3 startPosition, Vector3 goalPosition)
     {
+        //oh boy more tomfoolery. This finds which node is the shortest distance out of the list.
         int ClosestNodeIndex = 0;
         for (int n = 0; n < Nodes.Length; n++)
         {
-            Vector3 CurrentNode = StartPosition - Nodes[n].transform.position;
-            Vector3 ClosestNode = StartPosition - Nodes[ClosestNodeIndex].transform.position;
+            //get the current checked node vector and the closest node vector.
+            float CurrentNodeHDistance = (startPosition - Nodes[n].transform.position).magnitude + (goalPosition - Nodes[n].transform.position).magnitude;
+            float ClosestNodeHDistance = (startPosition - Nodes[ClosestNodeIndex].transform.position).magnitude + (goalPosition - Nodes[ClosestNodeIndex].transform.position).magnitude;
+            //    Vector3 CurrentNode = startPosition - Nodes[n].transform.position
+            //    Vector3 ClosestNode = startPosition - Nodes[ClosestNodeIndex].transform.position;
             bool cancel = false;
-            if (CurrentNode.magnitude < ClosestNode.magnitude)
+            //if the current checked node is closer than the closest node, become the new closest node
+            if (CurrentNodeHDistance < ClosestNodeHDistance)
             {
-                foreach (GameObject node in nodePath)
+                //loop through each node in the current nodepath to ensure it isn't a node going backwards.
+                foreach (Vector3 node in nodePath)
                 {
-                    if (Nodes[n] == node)
+                    //if the current node does exist in the node path, ignore it
+                    if (Nodes[n].transform.position == node)
                     {
                         cancel = true;
                     }
                 }
+                //if it isn't in the node path, remember the node.
                 if (!cancel)
                 {
                     ClosestNodeIndex = n;
                 }
             }
         }
+        //return the node found.S
         return ClosestNodeIndex;
     }
 
     public override void OnDeath()
     {
+        float distanceToShipTarget = (transform.position - shipTarget.position).magnitude;
+        shipTarget.GetComponent<ShipSystem2>().OnKill(distanceToShipTarget);
         Destroy(markerUI.gameObject);
     }
 
@@ -487,7 +550,6 @@ public class ShipAI : ShipSystem2
         {
             if (collider2 != null)
             {
-                boosting = false;
                 if (0.1f + positive > 0.1f - negative)
                 {
                     directionInput = 1;
@@ -499,13 +561,11 @@ public class ShipAI : ShipSystem2
             }
             else
             {
-                boosting = true;
                 directionInput = -1;
             }
         }
         else if (collider2 != null)
         {
-            boosting = true;
             directionInput = 1;
         }
         return directionInput;
@@ -609,9 +669,9 @@ public class ShipAI : ShipSystem2
 
     Vector3 MoveToTarget(Vector3 trueMovementTarget)
     {
-        float horizontalProduct = Vector3.Dot(transform.right, trueMovementTarget - transform.position);
-        float verticalProduct = Vector3.Dot(transform.up, trueMovementTarget - transform.position);
-        float forwardProduct = Vector3.Dot(transform.forward, trueMovementTarget - transform.position);
+        float horizontalProduct = Vector3.Dot(transform.right, (trueMovementTarget - transform.position));
+        float verticalProduct = Vector3.Dot(transform.up, (trueMovementTarget - transform.position));
+        float forwardProduct = Vector3.Dot(transform.forward, (trueMovementTarget - transform.position));
 
         return new Vector3(Mathf.Clamp(forwardProduct, -1, 1), Mathf.Clamp(horizontalProduct, -1, 1), Mathf.Clamp(verticalProduct, -1, 1));
     }

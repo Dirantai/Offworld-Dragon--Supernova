@@ -8,13 +8,16 @@ public class GunTest : MonoBehaviour
     public Transform shipTarget;
     public HitMarkerSystem hitMarkerSystem;
     public Transform cursorUI;
+    private ShipSystem2 player;
     public float speedMultiplier;
 
     // Start is called before the first frame update
     void Start()
     {
         speedMultiplier = 1;
+        Cursor.lockState = CursorLockMode.Confined;
         turrets = GetComponentsInChildren<Turret>();
+        player = GetComponent<ShipSystem2>();
     }
 
     Vector3 Intercept(float bulletSpeed)
@@ -54,14 +57,14 @@ public class GunTest : MonoBehaviour
 
     void HandleEnemySelection()
     {
-        if (Input.GetButtonDown("Fire3"))
+        if (player.inputs["Target"].triggered)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject enemy in enemies)
             {
                 Vector3 enemyScreenPoint = Camera.main.WorldToScreenPoint(enemy.transform.position);
                 enemyScreenPoint = new Vector3(enemyScreenPoint.x, enemyScreenPoint.y, 0);
-                Vector3 mouseToEnemy = enemyScreenPoint - Input.mousePosition;
+                Vector3 mouseToEnemy = enemyScreenPoint - cursorUI.position;
                 if(mouseToEnemy.magnitude <= 45)
                 {
                     shipTarget = enemy.transform;
@@ -75,9 +78,14 @@ public class GunTest : MonoBehaviour
     {
         Vector3 interceptPoint = Intercept(bulletSpeed);
         float reticleProduct = Vector3.Dot(interceptPoint - transform.position, transform.forward);
+        if(player.vJoy){
+            cursorUI.position = player.inputs["Mouse Position"].ReadValue<Vector2>();
+        }else{
+            cursorUI.position = new Vector2(Screen.width / 2, Screen.height / 2);
+        }
 
-        Ray reticleRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        cursorUI.position = Input.mousePosition;
+        Ray reticleRay = Camera.main.ScreenPointToRay(cursorUI.position);
+
         if (shipTarget != null)
         {
             float distance = (shipTarget.position - reticleRay.origin).magnitude;
@@ -90,12 +98,12 @@ public class GunTest : MonoBehaviour
             }
             Vector3 aimpointToIntercept = aimPoint - interceptPoint;
             Vector3 trueAimPoint = Vector3.zero;
-            Vector3 screenAimToIntercept = Camera.main.WorldToScreenPoint(aimPoint) - Camera.main.WorldToScreenPoint(shipTarget.position);
+            Vector3 screenAimToIntercept = Camera.main.WorldToScreenPoint(aimPoint) - Camera.main.WorldToScreenPoint(interceptPoint);
             if (reticleProduct > 0)
             {
                 if (screenAimToIntercept.magnitude < 50)
                 {
-
+                    Shoot = true;
                     trueAimPoint = aimpointToIntercept / (200 / (screenAimToIntercept.magnitude)) + interceptPoint;
                     if(screenAimToIntercept.magnitude < 15)
                     {
@@ -104,6 +112,7 @@ public class GunTest : MonoBehaviour
                 }
                 else
                 {
+                    if(player.inputs["Shoot"].ReadValue<float>() == 0) Shoot = false;
                     trueAimPoint = aimPoint;
                 }
             }
@@ -119,6 +128,7 @@ public class GunTest : MonoBehaviour
         }
         else
         {
+            if(player.inputs["Shoot"].ReadValue<float>() == 0) Shoot = false;
             turret.HandleUI(100);
 
             Vector3 trueAimPoint = reticleRay.origin + (reticleRay.direction * 100);
@@ -135,7 +145,7 @@ public class GunTest : MonoBehaviour
     public bool Shoot;
     public bool AI;
     Vector3 aimPoint;
-
+    private float deltaInput;
     void ControlTurrets()
     {
         
@@ -157,7 +167,13 @@ public class GunTest : MonoBehaviour
             turret.TurretTurn(aimPoint, turret.weaponValues.turnSpeed);
             if (!AI)
             {
-                Shoot = Input.GetButton("Fire1");
+                if(deltaInput < player.inputs["Shoot"].ReadValue<float>()){
+                    deltaInput = player.inputs["Shoot"].ReadValue<float>();
+                    Shoot = true;
+                }else if (deltaInput > player.inputs["Shoot"].ReadValue<float>()){
+                    deltaInput = player.inputs["Shoot"].ReadValue<float>();
+                    Shoot = false;
+                }
             }
             GunShoot(turret.weaponValues, Shoot);
         }
@@ -183,11 +199,14 @@ public class GunTest : MonoBehaviour
     {
         if (shoot && weaponValues.loaded)
         {
+            player.soundSystem?.SetPitch(0.8f, "Shoot");
+            player.soundSystem.PlaySounds("Shoot", 0.1f);
             weaponValues.loaded = false;
             GameObject instancedBullet = Instantiate(weaponValues.bulletModel, weaponValues.Barrel.position, weaponValues.Barrel.rotation) as GameObject;
             instancedBullet.GetComponent<Bullet>().BulletVelocity = weaponValues.projectileSpeed * speedMultiplier;
             instancedBullet.GetComponent<Bullet>().Damage = weaponValues.baseDamage;
             instancedBullet.GetComponent<Bullet>().HitMarkerDetector = weaponValues.hitMarker;
+            instancedBullet.GetComponent<Bullet>().shooter = player;
             instancedBullet.transform.rotation = Quaternion.LookRotation(CalculateSpreadVector(weaponValues)); //apply the spread
         }
     }
